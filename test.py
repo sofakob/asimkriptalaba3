@@ -19,7 +19,6 @@ def miller_rabin(a:list):
         s+=1
         #d=d/Decimal(2)
         d=d//2
-        print(d)
     for _ in range(k):
         x=randint(2, p-1)
         gcdx=gcd(x, p)

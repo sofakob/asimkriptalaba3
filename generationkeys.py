@@ -21,18 +21,30 @@ def prostechislo(k:int):
 
 
 def  GenerateKeyPair(bits):
-    bits_pq=int(((bits/2)-3)/4)
-    p=prostechislo(bits_pq)*4+3
-    q=prostechislo(bits_pq)*4+3
-    n=p*q
+
+    bits_p=int(((bits//2-2)))
+    bits_q=bits_p
+    while True:
+     print(1)
+     p=prostechislo(bits_p)*4+3
+     q=prostechislo(bits_q)*4+3
+     n=p*q
+     print(n.bit_length())
+     if n.bit_length()==bits:
+         print(0)
+         break
+     elif n.bit_length()>bits:
+         bits_p-=1
+         bits_q-=1
     b=randint(2, n-1)
-    if b%2!=0:
-        b+=1
     return p, q, n, b
 
 
 
-p, q, n, b=GenerateKeyPair(2048)
+p, q, n, b=GenerateKeyPair(128)
+p=int(p)
+n=int(n)
+print(p.bit_length(), n.bit_length())
 with open("secret_keys.txt", "w") as f:
     print(hex(p), file=f)
     print(hex(q), file=f)
