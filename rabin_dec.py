@@ -9,12 +9,17 @@ from l20 import l20
 def parsing_x(x:int, n:int):
     r=l20(64)
     r=int(''.join(str(i) for i in r), 2)
-    r=str(hex(r))
     x_str=(hex(x))
-#тут виправлю
+    r=f"{r:016x}"
+    l=(n.bit_length()+7)//8
+    l_2=(l-10)*2
+    m=f"{x:0{l_2}x}"
+    x_ret="0x00"+"ff"+m+r
 
-   # x_ret= 
-    return int(x_ret)
+
+
+   
+    return int(x_ret, 16)
 
 
 
@@ -51,21 +56,21 @@ def Decrypt():
     print(c1)
     c1=int(c1, 16)
     print(c1)
-    c2=c2.encode()
+    #c2=c2.encode()
     c2=int(c2, 16)
-    p=p.encode()
+    #p=p.encode()
     p=int(p, 16)
-    q=q.encode()
+    #q=q.encode()
     q=int(q, 16)
-    n=n.encode()
+    #n=n.encode()
     n=int(n, 16)
-    b=b.encode()
+    #b=b.encode()
     b=int(b, 16)
     b_2=b*pow(2, -1, n)%n
     b_4=b*b*pow(4, -1, n)%n
-    y=-b_2+isqrt(shifr+b_4)
+    y=shifr+b_4
     #y=int(y)
-    y=y%n
+    #y=y%n
     s1=pow(y, (p+1)//4, p)
     s2=pow(y, (q+1)//4, q)
     u, v, _=gcdex(p, q)
@@ -73,11 +78,12 @@ def Decrypt():
     v=int(v)
     print(u*p+v*q, 554327)
     x=[0]*4
-    x[0]=(u*p*s1+v*q*s2)%n
-    x[1]=(u*p*s1-v*q*s2)%n
-    x[2]=(-u*p*s1+v*q*s2)%n
-    x[3]=(-u*p*s1-v*q*s2)%n
-
+    x[0]=(u*p*s1+v*q*s2)
+    x[1]=(u*p*s1-v*q*s2)
+    x[2]=(-u*p*s1+v*q*s2)
+    x[3]=(-u*p*s1-v*q*s2)
+    for i in range(4):
+        x[i]=(x[i]-b_2)%n
 
     text=0
     for i in range(4):
@@ -87,18 +93,14 @@ def Decrypt():
         if prov==True:
             text=hex(x[i])
     print(text)
+    text=int(text, 16)
     file_for_text=input('Введіть назву файлу куди вам записати розшифрований текст')
     l=(text.bit_length()+7)//8
-    
-    text_b=text.to_bytes(l, "big")
-    print(text_b)
-    text=text_b[2:l-8]
-    print(text)
-    text=int.from_bytes(text, "big")
-    print(hex(parsing_x(1001, n)))
+    text=(str(hex(text)))
+    text=text[2:l-8]
+    print(hex(parsing_x(1002, n)))
     with open (file_for_text, "w") as f:
-        print(hex(text), file=f)
+        print(text, file=f)
     
-     
 
 Decrypt()
