@@ -5,7 +5,7 @@ from sympy import mod_inverse, sqrt_mod
 from sympy import gcdex
 from l20 import l20
 
-
+'''
 def parsing_x(x:int, n:int):
     r=l20(64)
     r=int(''.join(str(i) for i in r), 2)
@@ -20,8 +20,14 @@ def parsing_x(x:int, n:int):
 
    
     return int(x_ret, 16)
-
-
+'''
+def parsing_x(x:int, n:int):
+    r=l20(64)
+    r=int(''.join(str(i) for i in r), 2)
+    l=(n.bit_length()+7)//8
+    f=8*(l-8)
+    x=255*pow(2, f)+x*pow(2, 64)+r
+    return x
 
 
 def proverca(x, b, n, c1, c2):

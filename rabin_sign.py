@@ -4,21 +4,37 @@ from sympy import gcdex
 import random 
 from secrets import randbits
 
-
+'''
 def parsing_x(x:int, n:int):
     r=l20(64)
     r=int(''.join(str(i) for i in r), 2)
-    x_str=(hex(x))
     r=f"{r:016x}"
     l=(n.bit_length()+7)//8
     l_2=(l-10)*2
     m=f"{x:0{l_2}x}"
-    x_ret="0x00"+"ff"+m+r
+    x_ret="00"+"ff"+m+r
 
-
-
-   
     return int(x_ret, 16)
+
+def parsing_x(x:int, n:int):
+    l=(n.bit_length()+7)//8
+    
+    nuliki= b'\x00'
+    efki=b'\xFF'
+    x_bit=x.to_bytes(l-10, "big")
+    r= randbits(64).to_bytes(8, "big")
+    x_ret= nuliki+efki+x_bit+r
+    #print(x_ret)
+    return int.from_bytes(x_ret, "big")
+'''
+def parsing_x(x:int, n:int):
+    r=l20(64)
+    r=int(''.join(str(i) for i in r), 2)
+    l=(n.bit_length()+7)//8
+    f=8*(l-8)
+    x=255*pow(2, f)+x*pow(2, 64)+r
+    return x
+
 
 def sign(m:int, p:int, q:int):
     while True:
@@ -55,6 +71,7 @@ def SIGN():
     text = input('Введіть назву файла куди записати підписане повідомлення: ')
     with open(message, "r") as f:
         m=f.readline().strip()
+    #m_int=int.from_bytes(m, "big")
     with open(secret_key, "r") as f:
         p=f.readline().strip()
         q=f.readline().strip()
